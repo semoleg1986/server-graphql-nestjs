@@ -1,0 +1,27 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Property {
+  name: String!
+  cost: Float!
+  description: String!
+  location: String!
+  contacts: String!
+}
+
+type Query {
+  getProperties: [Property]
+}
+
+type Mutation {
+  createProperty(input: PropertyInput): Property
+}
+
+input PropertyInput {
+  name: String!
+  cost: Float!
+  description: String!
+  location: String!
+  contacts: String!
+}
