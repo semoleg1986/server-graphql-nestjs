@@ -1,16 +1,35 @@
-import { Query, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  Int,
+  Query,
+  ResolveField,
+  Resolver,
+  Parent,
+} from '@nestjs/graphql';
 import { Property } from '../models/Property';
+import { mockProperties } from 'src/_mocks/mockProperties';
+import { PropertySetting } from '../models/PropertySetting';
+import { mockPropertiesSettings } from 'src/_mocks/mockPropertiesSettings';
 
-@Resolver()
+@Resolver(() => Property)
 export class PropertyResolver {
-  @Query(() => Property)
-  getProperty() {
-    return {
-      name: 'Уютная квартира',
-      cost: 100000,
-      description: 'Прекрасная квартира с видом на город',
-      location: 'Центральный район',
-      contacts: 'Телефон: 123-456-789',
-    };
+  @Query(() => Property, { nullable: true })
+  getPropertyById(@Args('id', { type: () => Int }) id: number) {
+    return mockProperties.find((property) => property.id === id);
+  }
+
+  @Query(() => [Property])
+  getProperties() {
+    return mockProperties;
+  }
+
+  @ResolveField(() => PropertySetting, {
+    name: 'settings',
+    nullable: true,
+  })
+  getProperySettings(@Parent() property: Property) {
+    return mockPropertiesSettings.find(
+      (setting) => setting.propertyId === property.id,
+    );
   }
 }

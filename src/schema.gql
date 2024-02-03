@@ -2,26 +2,23 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type PropertySetting {
+  propertyId: Int!
+  recieveNotifications: Boolean!
+  recieveEmails: Boolean!
+}
+
 type Property {
+  id: Int!
   name: String!
   cost: Float!
   description: String!
   location: String!
   contacts: String!
+  settings: PropertySetting
 }
 
 type Query {
-  getProperties: [Property]
-}
-
-type Mutation {
-  createProperty(input: PropertyInput): Property
-}
-
-input PropertyInput {
-  name: String!
-  cost: Float!
-  description: String!
-  location: String!
-  contacts: String!
+  getPropertyById(id: Int!): Property
+  getProperties: [Property!]!
 }
