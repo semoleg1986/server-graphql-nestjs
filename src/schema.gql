@@ -2,23 +2,55 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type PropertySetting {
-  propertyId: Int!
-  recieveNotifications: Boolean!
-  recieveEmails: Boolean!
-}
-
 type Property {
-  id: Int!
-  name: String!
-  cost: Float!
+  id: ID!
+  title: String!
   description: String!
-  location: String!
-  contacts: String!
-  settings: PropertySetting
+  imageSrc: String!
+  createdAt: String!
+  updatedAt: String!
+  category: String!
+  roomCount: Float!
+  bathroomCount: Float!
+  guestCount: Float!
+  locationValue: String!
+  userId: String!
+  price: Float!
 }
 
 type Query {
-  getPropertyById(id: Int!): Property
+  getPropertyWithId(id: String!): [Property!]!
+  getPropertyWithCategory(category: String!): [Property!]!
   getProperties: [Property!]!
+}
+
+type Mutation {
+  createProperty(createPropertyInput: CreatePropertyInput!): Property!
+  updateProperty(id: String!, updatePropertyInput: UpdatePropertyInput!): Property!
+  deleteProperty(id: String!): Boolean!
+}
+
+input CreatePropertyInput {
+  title: String!
+  description: String!
+  imageSrc: String!
+  category: String!
+  roomCount: Float!
+  bathroomCount: Float!
+  guestCount: Float!
+  locationValue: String!
+  userId: String!
+  price: Float!
+}
+
+input UpdatePropertyInput {
+  title: String
+  description: String
+  imageSrc: String
+  category: String
+  roomCount: Float
+  bathroomCount: Float
+  guestCount: Float
+  locationValue: String
+  price: Float
 }
