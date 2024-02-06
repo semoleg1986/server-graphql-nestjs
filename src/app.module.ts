@@ -4,7 +4,6 @@ import { GraphQLModule } from '@nestjs/graphql';
 
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-
 import { PropertyModule } from './property/property.module';
 import { Property } from './property/property.entity';
 
@@ -23,7 +22,6 @@ import { Property } from './property/property.entity';
       autoSchemaFile: 'src/schema.gql',
     }),
     PropertyModule,
-
   ],
   controllers: [],
   providers: [],
