@@ -3,25 +3,54 @@
 # ------------------------------------------------------
 
 type Property {
-  name: String!
-  cost: Float!
+  id: ID!
+  title: String!
   description: String!
-  location: String!
-  contacts: String!
+  imageSrc: String!
+  createdAt: String!
+  updatedAt: String!
+  category: String!
+  roomCount: Float!
+  bathroomCount: Float!
+  guestCount: Float!
+  locationValue: String!
+  userId: String!
+  price: Float!
 }
 
 type Query {
-  getProperties: [Property]
+  getPropertyWithId(id: String!): [Property!]!
+  getPropertyWithCategory(category: String!): [Property!]!
+  getProperties: [Property!]!
 }
 
 type Mutation {
-  createProperty(input: PropertyInput): Property
+  createProperty(createPropertyInput: CreatePropertyInput!): Property!
+  updateProperty(id: String!, updatePropertyInput: UpdatePropertyInput!): Property!
+  deleteProperty(id: String!): Boolean!
 }
 
-input PropertyInput {
-  name: String!
-  cost: Float!
+input CreatePropertyInput {
+  title: String!
   description: String!
-  location: String!
-  contacts: String!
+  imageSrc: String!
+  category: String!
+  roomCount: Float!
+  bathroomCount: Float!
+  guestCount: Float!
+  locationValue: String!
+  userId: String!
+  price: Float!
+}
+
+input UpdatePropertyInput {
+  title: String
+  description: String
+  imageSrc: String
+  category: String
+  roomCount: Float
+  bathroomCount: Float
+  guestCount: Float
+  locationValue: String
+  price: Float
 }
