@@ -1,51 +1,71 @@
 import { Query, Mutation, Resolver, Args } from '@nestjs/graphql';
-import { PropertyType } from './property.type';
 import { PropertyService } from './property.service';
 import { CreatePropertyInput } from './inputs/create-property.input';
 import { UpdatePropertyInput } from './inputs/update-property.input';
+import { CurrentUser } from 'src/auth/get-current-user.decorator';
+import { User } from 'src/users/user.entity';
+import { Property } from './property.entity';
+import { UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/guard/jwt-auth.guard';
 
-@Resolver(() => PropertyType)
+@Resolver(() => Property)
 export class PropertyResolver {
   constructor(private propertyService: PropertyService) {}
 
-  @Query(() => [PropertyType])
+  @Query(() => [Property])
   async getPropertyWithId(@Args('id') id: string) {
     const property = await this.propertyService.getPropertyWithId(id);
     return [property];
   }
 
-  @Query(() => [PropertyType])
+  @Query(() => [Property])
   async getPropertyWithCategory(@Args('category') category: string) {
     return await this.propertyService.getPropertyWithCategory(category);
   }
 
-  @Query(() => [PropertyType])
+  @Query(() => [Property])
   async getProperties() {
     return await this.propertyService.getAllProperties();
   }
 
-  @Mutation(() => PropertyType)
+  @UseGuards(JwtAuthGuard)
+  @Query(() => [Property])
+  async getAllPropertiesByUser(@CurrentUser() user: User): Promise<Property[]> {
+    return this.propertyService.getAllPropertiesByUser(user);
+  }
+
+  @Query(() => Property)
+  async getPropertyByUser(
+    @Args('id') id: string,
+    @CurrentUser() user: User,
+  ): Promise<Property> {
+    return this.propertyService.getPropertyByUser(id, user);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Mutation(() => Property)
   async createProperty(
     @Args('createPropertyInput') createPropertyInput: CreatePropertyInput,
-  ) {
-    return await this.propertyService.createProperty(createPropertyInput);
+    @CurrentUser() user: any,
+  ): Promise<Property> {
+    return await this.propertyService.createProperty(createPropertyInput, user);
   }
 
-  @Mutation(() => PropertyType)
+  @UseGuards(JwtAuthGuard)
+  @Mutation(() => Property)
   async updateProperty(
-    @Args('id') id: string,
+    @CurrentUser() user: User,
     @Args('updatePropertyInput') updatePropertyInput: UpdatePropertyInput,
-  ) {
-    return await this.propertyService.updateProperty(id, updatePropertyInput);
+  ): Promise<Property> {
+    return await this.propertyService.updateProperty(updatePropertyInput, user);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Mutation(() => Boolean)
-  async deleteProperty(@Args('id') id: string): Promise<boolean> {
-    try {
-      await this.propertyService.deleteProperty(id);
-      return true;
-    } catch (error) {
-      return false;
-    }
+  async deleteProperty(
+    @Args('id') id: string,
+    @CurrentUser() user: User,
+  ): Promise<Property> {
+    return this.propertyService.deleteProperty(id, user);
   }
 }

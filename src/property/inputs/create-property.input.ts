@@ -39,10 +39,6 @@ export class CreatePropertyInput {
   locationValue: string;
 
   @Field()
-  @IsNotEmpty({ message: 'User ID should not be empty' })
-  userId: string;
-
-  @Field()
   @IsInt({ message: 'Price should be an integer' })
   @Min(1, { message: 'Price should be at least 1' })
   price: number;

@@ -1,8 +1,21 @@
-import { Field, InputType } from '@nestjs/graphql';
-import { IsInt, Min, IsString, IsOptional, IsNumber } from 'class-validator';
+import { Field, ID, InputType } from '@nestjs/graphql';
+import {
+  IsInt,
+  Min,
+  IsString,
+  IsOptional,
+  IsNumber,
+  IsUUID,
+  IsEnum,
+} from 'class-validator';
+import { PropertyStatus } from '../property.status';
 
 @InputType()
 export class UpdatePropertyInput {
+  @Field(() => ID)
+  @IsUUID('4', { each: true })
+  id: string;
+
   @Field({ nullable: true })
   @IsOptional() // Поле необязательное
   @IsString({ message: 'Title should be a string' }) // Поле должно быть строкой
@@ -51,4 +64,8 @@ export class UpdatePropertyInput {
   @IsNumber({}, { message: 'Price should be a number' }) // Поле должно быть числом
   @Min(1, { message: 'Price should be at least 0' })
   price?: number;
+
+  @Field()
+  @IsEnum(PropertyStatus)
+  status?: PropertyStatus;
 }

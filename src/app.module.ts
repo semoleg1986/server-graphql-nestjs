@@ -6,6 +6,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { PropertyModule } from './property/property.module';
 import { Property } from './property/property.entity';
+import { UsersModule } from './users/users.module';
+import { User } from './users/user.entity';
+import { AuthModule } from './auth/auth.module';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -16,13 +20,16 @@ import { Property } from './property/property.entity';
       useUnifiedTopology: true,
       synchronize: true,
       logging: true,
-      entities: [Property],
+      entities: [Property, User],
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
-      autoSchemaFile: 'src/schema.gql',
+      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      context: ({ req }) => ({ req }),
     }),
     PropertyModule,
+    UsersModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [],
