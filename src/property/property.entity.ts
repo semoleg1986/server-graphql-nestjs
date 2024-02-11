@@ -9,7 +9,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { PropertyStatus } from './property.status';
-import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { Field, Float, ID, Int, ObjectType } from '@nestjs/graphql';
 
 @Entity()
 @ObjectType('Property')
@@ -50,15 +50,15 @@ export class Property {
   category: string;
 
   @Column()
-  @Field()
+  @Field(() => Int)
   roomCount: number;
 
   @Column()
-  @Field()
+  @Field(() => Int)
   bathroomCount: number;
 
   @Column()
-  @Field()
+  @Field(() => Int)
   guestCount: number;
 
   @Column()
@@ -66,7 +66,7 @@ export class Property {
   locationValue: string;
 
   @Column()
-  @Field()
+  @Field(() => Float)
   price: number;
 
   @ManyToOne(() => User, (user) => user.properties)

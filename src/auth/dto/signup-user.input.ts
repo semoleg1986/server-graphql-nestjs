@@ -17,4 +17,7 @@ export class SignupUserInput {
     message: 'password is too weak',
   })
   password: string;
+
+  @Field(() => [String], { defaultValue: [] })
+  favoriteIds?: string[];
 }

@@ -50,4 +50,21 @@ export class UsersService {
     }
     return user;
   }
+
+  async addToFavorites(user: User, propertyId: string): Promise<User> {
+    if (!user.favoriteIds.includes(propertyId)) {
+      user.favoriteIds.push(propertyId);
+      await this.usersRepository.save(user);
+    }
+    return user;
+  }
+
+  async removeFromFavorites(user: User, propertyId: string): Promise<User> {
+    const index = user.favoriteIds.indexOf(propertyId);
+    if (index !== -1) {
+      user.favoriteIds.splice(index, 1);
+      await this.usersRepository.save(user);
+    }
+    return user;
+  }
 }

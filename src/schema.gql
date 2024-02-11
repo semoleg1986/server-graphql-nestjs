@@ -27,9 +27,9 @@ type Property {
   updatedAt: DateTime!
   status: String!
   category: String!
-  roomCount: Float!
-  bathroomCount: Float!
-  guestCount: Float!
+  roomCount: Int!
+  bathroomCount: Int!
+  guestCount: Int!
   locationValue: String!
   price: Float!
   user: User!
@@ -59,6 +59,8 @@ type Mutation {
   deleteProperty(id: String!): Boolean!
   signup(loginUserInput: SignupUserInput!): SignupResponse!
   signin(loginUserInput: SignupUserInput!): SigninResponse!
+  addToFavorites(id: String!): User!
+  removeFromFavorites(id: String!): User!
 }
 
 input CreatePropertyInput {
@@ -91,4 +93,5 @@ input SignupUserInput {
   name: String
   email: String!
   password: String!
+  favoriteIds: [String!]! = []
 }
